@@ -5,6 +5,25 @@ class Content():
         self.Requests = Requests
         self.log = log
         self.content = {}
+        self._agents_data_cache = None
+
+    def _get_agents_data(self):
+        if self._agents_data_cache is not None:
+            return self._agents_data_cache
+
+        try:
+            response = requests.get(
+                "https://valorant-api.com/v1/agents?isPlayableCharacter=true",
+                timeout=5,
+            )
+            payload = response.json() if response.ok else {}
+            data = payload.get("data", []) if isinstance(payload, dict) else []
+            self._agents_data_cache = data
+            return data
+        except requests.exceptions.RequestException as ex:
+            self.log(f"agent api fetch failed: {ex}")
+            self._agents_data_cache = []
+            return []
 
     def get_content(self):
         self.content = self.Requests.fetch("custom", f"https://shared.{self.Requests.region}.a.pvp.net/content-service/v3/content", "get")
@@ -29,21 +48,35 @@ class Content():
         return None
 
     def get_all_agents(self):
-        rAgents = requests.get("https://valorant-api.com/v1/agents?isPlayableCharacter=true").json()
+        rAgents = self._get_agents_data()
         agent_dict = {}
         agent_dict.update({None: None})
         agent_dict.update({"": ""})
-        for agent in rAgents["data"]:
+        for agent in rAgents:
             agent_dict.update({agent['uuid'].lower(): agent['displayName']})
         self.log(f"retrieved agent dict: {agent_dict}")
         return agent_dict
+
+    def get_all_agent_icons(self):
+        rAgents = self._get_agents_data()
+        agent_icon_dict = {}
+        agent_icon_dict.update({None: None})
+        agent_icon_dict.update({"": ""})
+        for agent in rAgents:
+            agent_icon_dict.update({agent.get('uuid', '').lower(): agent.get('displayIcon')})
+        self.log("retrieved agent icon dict")
+        return agent_icon_dict
 
     def get_all_maps(self):
         """
         Requests data and assets of all maps.
         :return: JSON of all map information.
         """
-        return requests.get("https://valorant-api.com/v1/maps").json()
+        try:
+            return requests.get("https://valorant-api.com/v1/maps", timeout=5).json()
+        except requests.exceptions.RequestException as ex:
+            self.log(f"maps api fetch failed: {ex}")
+            return {"data": []}
 
     def get_map_urls(self, maps) -> dict:
         map_dict = {}

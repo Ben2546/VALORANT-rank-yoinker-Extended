@@ -200,6 +200,22 @@ class Colors:
 
         return f"{rr_colored} {afk_colored}"
 
+    def get_current_rr_gradient(self, rr_value):
+        """Color current RR on a 0-100 red-to-green gradient."""
+        try:
+            rr_value = int(rr_value)
+        except (TypeError, ValueError):
+            return "[rgb(46,46,46)]N/A[/]"
+
+        rr_value = max(0, min(100, rr_value))
+        start = (241, 39, 39)
+        end = (18, 204, 25)
+        ratio = rr_value / 100
+        red = int(start[0] + (end[0] - start[0]) * ratio)
+        green = int(start[1] + (end[1] - start[1]) * ratio)
+        blue = int(start[2] + (end[2] - start[2]) * ratio)
+        return f"[rgb({red},{green},{blue})]{rr_value}[/]"
+
     def escape_ansi(self, line):
         ansi_escape = re.compile(r"(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]")
         return ansi_escape.sub("", line)

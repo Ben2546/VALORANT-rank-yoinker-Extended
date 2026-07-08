@@ -6,6 +6,7 @@ import base64
 import json
 import asyncio
 from colr import color
+from src.presences import get_session_loop_state
 
 class Ws:
     def __init__(self, lockfile, Requests, cfg, colors, hide_names, server, rpc=None):
@@ -84,17 +85,9 @@ class Ws:
                 
                 try:
                     private_data = json.loads(base64.b64decode(presence['private']))
-                    
-                    # Temp fix: Riot is swapping between nested and flat API structures.
-                    state = None
-                    if "matchPresenceData" in private_data: # Check for nested structure
-                        state = private_data.get("matchPresenceData", {}).get("sessionLoopState")
-                    elif "sessionLoopState" in private_data: # Check for flattened structure
-                        state = private_data.get("sessionLoopState")
-                    else:
-                        # No known structure found, log and fail
+                    state = get_session_loop_state(private_data)
+                    if state is None:
                         self.log(f"ERROR: Unknown presence API structure in 'websocket.handle': {private_data}")
-                        state = private_data["matchPresenceData"]["sessionLoopState"]
 
                 except (json.JSONDecodeError, KeyError, TypeError) as e:
                     self.log(f"Failed to decode private presence data: {e}")

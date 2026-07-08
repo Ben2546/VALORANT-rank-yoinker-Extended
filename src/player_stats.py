@@ -12,6 +12,10 @@ class PlayerStats:
     def _default_stats(self):
         return {
             "kd": "N/A",
+            "kda": "N/A",
+            "kills": "N/A",
+            "deaths": "N/A",
+            "assists": "N/A",
             "hs": "N/A",
             "RankedRatingEarned": "N/A",
             "AFKPenalty": "N/A",
@@ -75,7 +79,7 @@ class PlayerStats:
         return self._process_match_data(puuid, match_data, match_summary)
 
     def _process_match_data(self, puuid, match_data, match_summary):
-        total_hits, total_headshots, kills, deaths = 0, 0, 0, 0
+        total_hits, total_headshots, kills, deaths, assists = 0, 0, 0, 0, 0
 
         # Extract round stats
         for rround in match_data.get("roundResults", []):
@@ -95,10 +99,12 @@ class PlayerStats:
                 stats = player.get("stats", {})
                 kills = stats.get("kills", 0)
                 deaths = stats.get("deaths", 0)
+                assists = stats.get("assists", 0)
                 break
 
         # Calculate KD
         kd = round(kills / deaths, 2) if deaths else kills
+        kda = round((kills + assists) / deaths, 2) if deaths else (kills + assists)
 
         ranked_rating_earned = match_summary.get("RankedRatingEarned", "N/A")
         afk_penalty = match_summary.get("AFKPenalty", "N/A")
@@ -106,6 +112,10 @@ class PlayerStats:
         # Compile final stats
         final_stats = {
             "kd": kd,
+            "kda": kda,
+            "kills": kills,
+            "deaths": deaths,
+            "assists": assists,
             "hs": round((total_headshots / total_hits) * 100) if total_hits else "N/A",
             "RankedRatingEarned": ranked_rating_earned,
             "AFKPenalty": afk_penalty,

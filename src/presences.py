@@ -2,6 +2,53 @@ import base64
 import json
 import time
 
+
+def get_presence_value(payload, key, nested_section=None, default=None):
+    if not isinstance(payload, dict):
+        return default
+
+    if nested_section:
+        section = payload.get(nested_section)
+        if isinstance(section, dict) and key in section:
+            return section.get(key)
+
+    if key in payload:
+        return payload.get(key)
+
+    return default
+
+
+def get_session_loop_state(payload, default=None):
+    return get_presence_value(payload, "sessionLoopState", "matchPresenceData", default)
+
+
+def get_party_state(payload, default=None):
+    return get_presence_value(payload, "partyState", "partyPresenceData", default)
+
+
+def get_party_id(payload, default=""):
+    return get_presence_value(payload, "partyId", "partyPresenceData", default)
+
+
+def get_party_size(payload, default=0):
+    return get_presence_value(payload, "partySize", "partyPresenceData", default)
+
+
+def get_max_party_size(payload, default=0):
+    return get_presence_value(payload, "maxPartySize", "partyPresenceData", default)
+
+
+def get_party_accessibility(payload, default=""):
+    return get_presence_value(payload, "partyAccessibility", "partyPresenceData", default)
+
+
+def get_match_map(payload, default=""):
+    return get_presence_value(payload, "matchMap", "matchPresenceData", default)
+
+
+def get_account_level(payload, default=0):
+    return get_presence_value(payload, "accountLevel", "playerPresenceData", default)
+
 class Presences:
     def __init__(self, Requests, log):
         self.Requests = Requests
@@ -16,17 +63,10 @@ class Presences:
     def get_game_state(self, presences):
         private_presence = self.get_private_presence(presences)
         if private_presence:
-            # Temp fix: Riot is swapping between nested and flat API structures.
-            # Check for nested structure.
-            if "matchPresenceData" in private_presence:
-                return private_presence["matchPresenceData"]["sessionLoopState"]
-            # Check for flattened structure.
-            elif "sessionLoopState" in private_presence:
-                return private_presence["sessionLoopState"]
-            else:
-                # No known structure found, log and fail
+            state = get_session_loop_state(private_presence)
+            if state is None:
                 self.log("ERROR: Unknown presence API structure in 'get_game_state'.")
-                return private_presence["matchPresenceData"]["sessionLoopState"]
+            return state
         return None
 
     def get_private_presence(self, presences):
