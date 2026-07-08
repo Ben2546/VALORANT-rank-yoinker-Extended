@@ -21,8 +21,8 @@
 ## About The Project
 
  ![Screenshot](assets/previews/preview.png)
- ![PlayedWith](assets/previews/played-with.png)
  ![Skin Showcase Image](assets/previews/inventory-modal.png)
+ ![PlayedWith](assets/previews/played-with.png)
  ![tracker](assets/previews/tracker.png)
 
 |Current Skin|Current Rank|Rank Rating|Peak Rank|Account Level|
