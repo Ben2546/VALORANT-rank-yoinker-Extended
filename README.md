@@ -22,9 +22,13 @@
 
  ![Screenshot](assets/previews/preview.png)
  ![Skin Showcase Image](assets/previews/inventory-modal.png)
- ###Encounter Tracking (PlayedWith)
+ 
+ ### Encounter Tracking (PlayedWith)
+ 
  ![PlayedWith](assets/previews/played-with.png)
+ 
  Dropbox opens up a tracker link
+ 
  ![tracker](assets/previews/tracker.png)
 
 |Current Skin|Current Rank|Rank Rating|Peak Rank|Account Level|
