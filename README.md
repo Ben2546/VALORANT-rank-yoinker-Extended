@@ -4,6 +4,11 @@
     </a>
 <h5 align="center"> VALORANT rank yoinker</h5>
 
+> [!CAUTION]
+> ### An extended continuation of zayKenyon's final VRY 2.94 release, featuring an overhauled local dashboard with deep, real-time in-game analytics.
+> This is a final, one-time code drop and will not be maintained. It is provided completely as-is. If Riot updates the client and breaks something, you are on your own: feel free to fork it and fix it yourself.
+
+
 [![Discord][discord-shield]][discord-url]
 [![Downloads][downloads-shield]][downloads-url]
     
@@ -11,7 +16,6 @@
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
     <li><a href="#disclaimer">Disclaimer</a></li>
@@ -82,9 +86,6 @@ If you want to make a small change to the application, you can:
  The [Tweet](https://twitter.com/PlayVALORANT/status/1539728676815642624), which details Riot's API policies, outlines how
  applications are not allowed to expose data hidden by the game client. As of Version 1.262, vRY respects streamer mode.
 
-## Contributing
-
- Any contributions you make are **greatly appreciated**.
  
 ## Contact 
 
