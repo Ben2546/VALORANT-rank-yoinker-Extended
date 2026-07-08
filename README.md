@@ -20,8 +20,8 @@
     
 ## About The Project
 
- ![Screenshot](assets/Example.png)
- ![Skin Showcase Image](assets/SkinShowcase.png)
+ ![Screenshot](assets/previews/preview.png)
+ ![Skin Showcase Image](assets/previews/inventory-modal.png)
 
 |Current Skin|Current Rank|Rank Rating|Peak Rank|Account Level|
 |:---:|:---:|:---:|:---:|:---:|
