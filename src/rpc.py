@@ -43,7 +43,7 @@ class Rpc:
         # Base payload
         self._base_payload: Dict[str, Any] = {
             "buttons": [
-                {"label": "What's this? 👀", "url": "https://zaykenyon.github.io/VALORANT-rank-yoinker/"}
+                {"label": "What's this? 👀", "url": "https://github.com/Ben2546/VALORANT-rank-yoinker-Extended/"}
             ]
         }
         # Cache last payload (for dedupe)
